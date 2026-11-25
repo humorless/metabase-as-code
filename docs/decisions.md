@@ -30,6 +30,15 @@ Reason: The rule was easy to skip. Checked live on Metabase 0.61.3: running a ca
 dashboard do not change `updated_at`, and an edit through the API does, so the check does not fire on views and does
 fire on edits.
 
+## 2026-11-25 — Behavior evals run as separate claude -p processes
+
+Before: skill-creator's default is to spawn a with-skill and a baseline subagent per eval.
+Decision: Run each eval as its own `claude -p` process in a fixture project, with the skill copied into the project's
+`.claude/skills/` for the with-skill runs, and `mb` restricted to one profile through `XDG_CONFIG_HOME`.
+Reason: The subagent attempt was invalid: subagents inherited the parent conversation, and the baseline already knew
+about `mbac` and the user's earlier answers. Separate processes start clean, also test that the description triggers
+the skill, and cannot reach a production Metabase. Results: `skills/metabase-as-code/evals/RESULTS.md`.
+
 ## 2026-11-25 — Placeholder grammar
 
 Before: The source project used `"@database"` and `"@metabase/<path>.json"`; the later project used `"@card:<name>"`,

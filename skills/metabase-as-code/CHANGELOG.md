@@ -13,3 +13,4 @@ All notable changes to this skill will be documented in this file.
 - Column metadata (`columns`) merged into `result_metadata`, running the card first when needed
 - `references/format.md`, `references/pitfalls.md`
 - Tests against a fake `mb` (`node --test test/`)
+- Behavior evals: 14/14 with the skill, 10/14 without (`evals/RESULTS.md`)

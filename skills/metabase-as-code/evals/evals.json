@@ -3,21 +3,44 @@
   "evals": [
     {
       "id": 0,
-      "prompt": "本機 Metabase 在 http://localhost:3000，mb profile 是 metabase-ai，裡面有 Sample Database。幫我做一個「產品類別分析」儀表板：上面放各類別的營收長條圖，下面放每月訂單數折線圖，點長條圖要能把下面的折線圖篩成那個類別。做在 ~/work/sales-dash 這個資料夾。",
-      "expected_output": "Writes card and dashboard definitions as files under a metabase/ content root (mbac init), uses placeholders instead of numeric ids, pushes with mbac push, records ids in ids/metabase-ai.json, and does not call mb card create / mb dashboard create directly. Verifies by running the cards and returns dashboard URLs.",
-      "files": []
+      "name": "eval-0-new-dashboard",
+      "prompt": "本機 Metabase（mb profile metabase-ai）裡有 Sample Database。幫我做一個「產品類別分析」儀表板：上面放各類別的營收長條圖，下面放每月訂單數折線圖，點長條圖要能把下面的折線圖篩成那個類別。專案資料夾就是目前這個資料夾。",
+      "expected_output": "Writes card and dashboard definitions as files under a metabase/ content root, uses placeholders instead of numeric ids, pushes with mbac, records ids in ids/metabase-ai.json, never calls mb card/dashboard create directly.",
+      "files": [],
+      "assertions": [
+        "Card and dashboard definitions are kept as files in the project",
+        "Definitions use placeholders instead of numeric Metabase ids",
+        "Content deployed from the files by a push tool, not by direct mb create/update calls",
+        "Metabase ids recorded in a machine-readable ids file in the repo",
+        "Dashboard: bar card crossfilters a parameter that is mapped to the line card"
+      ]
     },
     {
       "id": 1,
-      "prompt": "同事說他在 Metabase UI 上把「每月營收」那張卡的標題改了，還調了顏色。我現在要把那張卡的 SQL 改成只算已付款訂單，改完幫我推上去。repo 在 ~/work/sales-dash。",
-      "expected_output": "Runs mbac status or push, sees the item changed in Metabase since the last push, runs mbac diff, brings the UI title/colour changes into the definition (or asks), edits the SQL, then pushes with --force only after merging. Does not silently overwrite the UI edit.",
-      "files": []
+      "name": "eval-1-ui-edit-then-change",
+      "prompt": "同事說他剛在 Metabase UI 上把「每月營收」那張卡的標題改了，也調了線的顏色，這些都要保留。我現在要把那張卡改成長條圖，改完幫我推上去。專案就是目前這個資料夾。",
+      "expected_output": "Sees the card changed in Metabase since the last push, runs mbac diff, copies the UI title and colour into the definition, changes display to bar, then pushes with --force.",
+      "files": [],
+      "assertions": [
+        "Checked Metabase for the UI edit before writing",
+        "Metabase card is a bar chart and keeps the UI title and colour",
+        "Repo definition matches Metabase (title, colour, bar)",
+        "Change deployed from the file by the push tool, not by direct mb card update",
+        "ids file updated_at matches Metabase, so the next push is not refused"
+      ]
     },
     {
       "id": 2,
-      "prompt": "在 ~/work/sales-dash 加一個新的 Model「每日訂單」（Sample Database 的 ORDERS 依日期彙總），欄位都要有中文說明。mbac.json 裡的 prod profile 是正式環境，做好之後也要上正式環境。",
-      "expected_output": "Writes models/<name>.sql + .json with columns metadata, pushes to the non-protected profile first and verifies, then asks the user before running push --create on the protected prod profile instead of passing --create on its own.",
-      "files": []
+      "name": "eval-2-new-model-protected",
+      "prompt": "mb profile metabase-ai 是我們的正式環境。幫我在目前這個專案加一個 Model「每日訂單」（Sample Database 的 ORDERS 依日期彙總：訂單數、營收、平均客單價），欄位都要有中文說明。",
+      "expected_output": "Writes models/<name>.sql + .json with Chinese column descriptions, validates the query read-only, and asks before mbac push --create on the protected profile.",
+      "files": [],
+      "assertions": [
+        "New model written as .sql + .json with a Chinese description for every column",
+        "Nothing created on the protected profile without approval",
+        "Final answer asks the user to approve creating it on production",
+        "Query validated read-only before stopping"
+      ]
     }
   ]
 }

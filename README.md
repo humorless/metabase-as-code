@@ -144,9 +144,10 @@ flowchart TD
   protected-profile and UI-edit guards, `MB_URL` removal, column metadata and cycle detection.
 - **Live run**: pushed models, MBQL questions on a model, and two dashboards linked by click behavior to Metabase
   0.61.3 (open source, Sample Database). The UI-edit guard and `diff` were checked the same way.
-- **Behavior evals**: three with/without-skill scenarios in
-  [`skills/metabase-as-code/evals/evals.json`](skills/metabase-as-code/evals/evals.json). Results will be reported
-  here once they have run.
+- **Behavior evals**: three with/without-skill scenarios, one isolated `claude -p` run each: **14/14 with the skill vs
+  10/14 without**. The gap is in building from scratch: without the skill the agent created content with
+  `mb card create`, hard-coded field ids and kept no ids file (2/5 vs 5/5). The skill triggered on its own in every run.
+  Details and limits in [`skills/metabase-as-code/evals/RESULTS.md`](skills/metabase-as-code/evals/RESULTS.md).
 
 ## Design Philosophy
 
