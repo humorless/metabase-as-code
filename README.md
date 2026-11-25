@@ -1,4 +1,4 @@
-# metabase-skill: Metabase as Code for AI Agents
+# metabase-as-code: Metabase as Code for AI Agents
 
 A Claude Code skill that makes AI agents keep Metabase cards, models and dashboards as files in a repo and deploy them
 with the official [`mb` CLI](https://github.com/metabase/metabase-cli), instead of clicking or calling the API until
@@ -61,7 +61,7 @@ like "make a Metabase dashboard for X" or "push this to Metabase". For reading d
 Install via npx:
 
 ```bash
-npx skills install humorless/metabase-skill
+npx skills install humorless/metabase-as-code
 ```
 
 This installs one skill: `metabase-as-code`.

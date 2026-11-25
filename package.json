@@ -1,11 +1,11 @@
 {
-  "name": "metabase-skill",
+  "name": "metabase-as-code",
   "version": "0.1.0",
   "description": "Agent skill: keep Metabase cards, models and dashboards in a repo and push them with the mb CLI",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/humorless/metabase-skill.git"
+    "url": "git+https://github.com/humorless/metabase-as-code.git"
   },
   "keywords": [
     "metabase",
