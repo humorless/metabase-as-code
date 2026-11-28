@@ -49,6 +49,14 @@ Metabase 0.61–0.63 (open source) and 1.63 (Enterprise).
 - **Subtotals add up whatever is in the column**, mixed units included. Say so in the card
   description, or split the units.
 
+## mbac itself
+
+- **Deleting a definition file leaves the item in Metabase.** `mbac` only pushes files that exist; it never archives.
+  Archive the card or dashboard in Metabase and remove its entry from `ids/<profile>.json`.
+- **`ids/<profile>.json` changes on every push.** It holds the `updated_at` the UI-edit guard checks. A push whose
+  `ids` file is not committed (another machine, a CI job) makes the next push from the repo refuse every item it
+  updated, and re-create the items it created (on a non-protected profile).
+
 ## Dashboards
 
 - **Filters only apply through `parameter_mappings`.** A card opened on its own (not from the

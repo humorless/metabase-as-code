@@ -133,12 +133,15 @@ my-dbt-project/
 - **Sync after a dbt run adds tables or columns**: Metabase only knows the schema from its last sync, so run
   `mb db sync-schema <database id> --profile P` before pushing. The sync runs in the background, so check that the new
   table appears in `mb db schema-tables` first.
-- **Use it alongside [dbt-metabase](https://github.com/gouline/dbt-metabase)**: dbt-metabase copies dbt descriptions
-  and semantic types into Metabase's table metadata and can read Metabase content back as dbt exposures. `mbac` keeps
-  the questions, models and dashboards themselves in the repo. They do not overlap.
-- **Deploy in CI**: after `dbt build`, `mbac push --all` from `metabase/` updates the dashboards in the same pipeline.
-  A protected profile still refuses to create anything without `--create`, and an item edited in the UI still stops
-  the push.
+- **Use it alongside [dbt-metabase](https://github.com/gouline/dbt-metabase)**: `dbt-metabase models` copies model
+  and column descriptions, primary and foreign keys, and semantic types from dbt into Metabase's table metadata;
+  `dbt-metabase exposures` writes Metabase questions and dashboards back into the dbt project as exposures. `mbac`
+  keeps the questions, models and dashboards themselves in the repo. The two do not overlap. Content pushed by `mbac` is
+  ordinary Metabase content, so `dbt-metabase exposures` can pick it up for dbt lineage (not tested here).
+- **Push each profile from one place**: `mbac push` rewrites `ids/<profile>.json` (new ids, and the `updated_at` the
+  UI-edit guard compares against), so whoever pushes must commit that file. A CI job that pushes and throws the file
+  away breaks the next run: the guard sees its own last push as a UI edit and refuses, and items it created get created
+  again (on a non-protected profile). Until CI commits `ids/` back, push from one machine and commit after each push.
 
 ## How It Works
 
@@ -177,6 +180,11 @@ flowchart TD
 3. `mbac push` to a non-protected profile, run the cards, check the numbers
 4. With the user's go-ahead, push to the protected profile
 5. Commit the definitions and `ids/<profile>.json`
+
+`push --all` sends every definition, changed or not: items with a recorded id are updated in place (same id and URL,
+no duplicates), so unchanged ones only get another revision in Metabase's history. It stops at the first item edited
+in the UI; items before it are already pushed. Deleting a definition file does not archive anything in Metabase:
+archive the item there and remove its entry from `ids/<profile>.json`.
 
 ## Validation
 
