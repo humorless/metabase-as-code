@@ -32,9 +32,9 @@ the agent's default habit and gives it one tool to do the right thing.
 ## Background & Motivation
 
 The workflow comes from a project that rebuilt cost-analysis reports on Metabase with an AI coding agent. Its repo held
-the SQL and card definitions; two shell scripts pushed them with `mb`. It worked, and each rule in it came from an incident
-(a card created in production by a stray `MB_URL`, column descriptions lost because `result_metadata` was null, a pivot
-setting silently ignored).
+the SQL and card definitions; two shell scripts pushed them with `mb`. It worked, and each rule in it came from an
+incident (a card created in production by a stray `MB_URL`, column descriptions lost because `result_metadata` was null,
+a pivot setting silently ignored).
 
 The catch: agents only followed it when the prompt spelled it out, and in a new folder they wrote their own push script
 from scratch. This repo turns the workflow into a skill that triggers on its own, and the two scripts into one tested
@@ -112,6 +112,33 @@ covers each requirement (and where a workaround was needed), and what was verifi
 - **Try the skill**: paste `PROMPT.md` into your coding agent in an empty folder, with a `local` profile on a Metabase
   that has the Sample Database.
 - **Try `mbac` alone**: `cd examples/drill-path/metabase` and run `mbac push --all`.
+
+## Using It with dbt
+
+`mbac` picks up where dbt stops. dbt builds and documents the tables; `mbac` deploys the Metabase content on top of
+them. It does not read the dbt project. Definitions refer to the tables dbt built by schema and name, as Metabase sees
+them.
+
+```text
+my-dbt-project/
+├── dbt_project.yml
+├── models/            # dbt
+└── metabase/          # mbac content root: mbac.json, models/, cards/, dashboards/, ids/
+```
+
+- **Refer to dbt tables by name**: `"@table:analytics.fct_orders"`, `"@field:analytics.fct_orders.amount"`, or plain
+  `analytics.fct_orders` inside a `.sql` file. With a placeholder, a renamed dbt model makes `mbac push` stop with an
+  error naming the missing table or column, instead of pushing a stale id. A name in SQL is only checked when the card
+  runs.
+- **Sync after a dbt run adds tables or columns**: Metabase only knows the schema from its last sync, so run
+  `mb db sync-schema <database id> --profile P` before pushing. The sync runs in the background, so check that the new
+  table appears in `mb db schema-tables` first.
+- **Use it alongside [dbt-metabase](https://github.com/gouline/dbt-metabase)**: dbt-metabase copies dbt descriptions
+  and semantic types into Metabase's table metadata and can read Metabase content back as dbt exposures. `mbac` keeps
+  the questions, models and dashboards themselves in the repo. They do not overlap.
+- **Deploy in CI**: after `dbt build`, `mbac push --all` from `metabase/` updates the dashboards in the same pipeline.
+  A protected profile still refuses to create anything without `--create`, and an item edited in the UI still stops
+  the push.
 
 ## How It Works
 
