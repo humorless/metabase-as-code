@@ -1,8 +1,8 @@
 # metabase-as-code: Metabase as Code for AI Agents
 
-A Claude Code skill that makes AI agents keep Metabase cards, models and dashboards as files in a repo and deploy them
-with the official [`mb` CLI](https://github.com/metabase/metabase-cli), instead of clicking or calling the API until
-the content exists only inside Metabase.
+An agent skill (`SKILL.md`) that makes AI coding agents keep Metabase cards, models and dashboards as files in a repo
+and deploy them with the official [`mb` CLI](https://github.com/metabase/metabase-cli), instead of clicking or calling
+the API until the content exists only inside Metabase.
 
 > **Version 0.2.0**: adds the [drill-path example](examples/drill-path) and two `mbac` fixes found while building it.
 > One skill, `metabase-as-code`, with its push tool `mbac`. See [CHANGELOG](#changelog).
@@ -31,8 +31,8 @@ the agent's default habit and gives it one tool to do the right thing.
 
 ## Background & Motivation
 
-The workflow comes from a project that rebuilt cost-analysis reports on Metabase with Claude Code. Its repo held the
-SQL and card definitions; two shell scripts pushed them with `mb`. It worked, and each rule in it came from an incident
+The workflow comes from a project that rebuilt cost-analysis reports on Metabase with an AI coding agent. Its repo held
+the SQL and card definitions; two shell scripts pushed them with `mb`. It worked, and each rule in it came from an incident
 (a card created in production by a stray `MB_URL`, column descriptions lost because `result_metadata` was null, a pivot
 setting silently ignored).
 
@@ -81,7 +81,7 @@ mb auth status --profile local
 
 ### 2. Ask for what you want
 
-In Claude Code:
+In your coding agent:
 
 ```text
 Make a Metabase dashboard on the local instance (profile local): revenue by category as bars,
@@ -93,7 +93,7 @@ The agent creates `metabase/`, writes the definitions, pushes them and gives you
 ### 3. Or drive `mbac` yourself
 
 ```bash
-MBAC="node ~/.claude/skills/metabase-as-code/scripts/mbac.mjs"   # wherever the skill is installed
+MBAC="node <skill-dir>/scripts/mbac.mjs"   # <skill-dir>: where your agent installed the skill
 $MBAC init --profile local --database "Sample Database"
 $MBAC status
 $MBAC render metabase/cards/revenue_by_category.json   # body with placeholders resolved, nothing written
@@ -109,8 +109,8 @@ customer → product mix, with a shared Y axis, top 10 + Other, "click once to s
 industry for the same customer. The folder holds the definitions the skill produced, a table of which Metabase feature
 covers each requirement (and where a workaround was needed), and what was verified.
 
-- **Try the skill**: paste `PROMPT.md` into Claude Code in an empty folder, with a `local` profile on a Metabase that has
-  the Sample Database.
+- **Try the skill**: paste `PROMPT.md` into your coding agent in an empty folder, with a `local` profile on a Metabase
+  that has the Sample Database.
 - **Try `mbac` alone**: `cd examples/drill-path/metabase` and run `mbac push --all`.
 
 ## How It Works

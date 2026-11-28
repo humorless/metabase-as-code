@@ -25,7 +25,7 @@ node ../../../skills/metabase-as-code/scripts/mbac.mjs push --all
 ```
 
 Open the `dashboards/company.json` URL it prints and click down. To see the skill do it from scratch instead, copy
-[PROMPT.md](PROMPT.md) into Claude Code in an empty folder.
+[PROMPT.md](PROMPT.md) into your coding agent in an empty folder.
 
 `ids/` is not committed here: every reader pushes to their own Metabase, so the ids are theirs.
 

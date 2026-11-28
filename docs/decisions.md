@@ -79,3 +79,14 @@ customer. Layer 3 uses quarters, not months. The second click is decided by the 
 Reason: 1,031 of 1,746 customers bought in all four categories, so "this customer also ships to" has content. Each
 customer has only a few orders per category; monthly lines were mostly empty. Metabase click behavior has no state, and
 has no axis shared across cards; the busiest industry month is 1,127 units.
+
+## 2026-11-28 — Describe the skill as agent-neutral, not Claude Code only
+
+Before: The README, the drill-path README, `package.json` keywords and the GitHub description called it a Claude Code
+skill and told readers to paste prompts "into Claude Code".
+Decision: Describe it as an agent skill (`SKILL.md`) for AI coding agents. Records of how things were actually built
+and tested (`evals/RESULTS.md`, the eval decision above, `PROMPT.md`, the `claude -p` line under Validation) keep
+naming Claude Code.
+Reason: Nothing in `SKILL.md` or `mbac` depends on Claude Code: the skill is plain `SKILL.md` plus a Node script that
+calls `mb`, and `npx skills install` installs it for other agents too. The evals only ran on Claude Code, so the
+records say so rather than claim other agents were tested.
