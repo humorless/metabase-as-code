@@ -1,0 +1,178 @@
+{
+  "name": "Shipments 3 · Customers",
+  "collection": "drill-path",
+  "description": "Layer 3: the top 10 customers of one industry (the rest as Other) and the full ranking. Click a customer once to select it; click it again, or the 🥧, to open its product mix.",
+  "parameters": [
+    {
+      "id": "industry",
+      "name": "Industry",
+      "slug": "industry",
+      "type": "string/=",
+      "sectionId": "string",
+      "default": [
+        "Widget"
+      ],
+      "required": true
+    },
+    {
+      "id": "customer",
+      "name": "Customer",
+      "slug": "customer",
+      "type": "string/=",
+      "sectionId": "string"
+    }
+  ],
+  "dashcards": [
+    {
+      "card_id": null,
+      "row": 0,
+      "col": 0,
+      "size_x": 24,
+      "size_y": 3,
+      "parameter_mappings": [
+        {
+          "parameter_id": "industry",
+          "target": [
+            "text-tag",
+            "industry"
+          ]
+        }
+      ],
+      "visualization_settings": {
+        "virtual_card": {
+          "name": null,
+          "display": "text",
+          "visualization_settings": {},
+          "dataset_query": {},
+          "archived": false
+        },
+        "text": "## Customers in {{industry}}\n[Company](/dashboard/@@dashboard:dashboards/company.json@@) › [Industries](/dashboard/@@dashboard:dashboards/industries.json@@) › **{{industry}}** › Product mix. Click a customer in the table once to select it (★); click the selected customer again, or 🥧, to open its product mix. Clicking a line selects that customer."
+      }
+    },
+    {
+      "card_id": "@card:cards/customers_trend.json",
+      "row": 3,
+      "col": 0,
+      "size_x": 24,
+      "size_y": 8,
+      "parameter_mappings": [
+        {
+          "parameter_id": "industry",
+          "card_id": "@card:cards/customers_trend.json",
+          "target": [
+            "variable",
+            [
+              "template-tag",
+              "industry"
+            ]
+          ]
+        },
+        {
+          "parameter_id": "customer",
+          "card_id": "@card:cards/customers_trend.json",
+          "target": [
+            "variable",
+            [
+              "template-tag",
+              "customer"
+            ]
+          ]
+        }
+      ],
+      "visualization_settings": {
+        "click_behavior": {
+          "type": "crossfilter",
+          "parameterMapping": {
+            "customer": {
+              "id": "customer",
+              "source": {
+                "type": "column",
+                "id": "CUSTOMER",
+                "name": "CUSTOMER"
+              },
+              "target": {
+                "type": "parameter",
+                "id": "customer"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "card_id": "@card:cards/customer_ranking.json",
+      "row": 11,
+      "col": 0,
+      "size_x": 24,
+      "size_y": 9,
+      "parameter_mappings": [
+        {
+          "parameter_id": "industry",
+          "card_id": "@card:cards/customer_ranking.json",
+          "target": [
+            "variable",
+            [
+              "template-tag",
+              "industry"
+            ]
+          ]
+        },
+        {
+          "parameter_id": "customer",
+          "card_id": "@card:cards/customer_ranking.json",
+          "target": [
+            "variable",
+            [
+              "template-tag",
+              "customer"
+            ]
+          ]
+        }
+      ],
+      "visualization_settings": {
+        "column_settings": {
+          "[\"name\",\"CUSTOMER\"]": {
+            "click_behavior": {
+              "type": "link",
+              "linkType": "url",
+              "linkTemplate": "/dashboard/{{NEXT_DASHBOARD}}?industry={{INDUSTRY}}&customer={{CUSTOMER}}"
+            }
+          },
+          "[\"name\",\"PRODUCT_MIX\"]": {
+            "click_behavior": {
+              "type": "link",
+              "linkType": "dashboard",
+              "targetId": "@dashboard:dashboards/product_mix.json",
+              "parameterMapping": {
+                "industry": {
+                  "id": "industry",
+                  "source": {
+                    "type": "column",
+                    "id": "INDUSTRY",
+                    "name": "INDUSTRY"
+                  },
+                  "target": {
+                    "type": "parameter",
+                    "id": "industry"
+                  }
+                },
+                "customer": {
+                  "id": "customer",
+                  "source": {
+                    "type": "column",
+                    "id": "CUSTOMER",
+                    "name": "CUSTOMER"
+                  },
+                  "target": {
+                    "type": "parameter",
+                    "id": "customer"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

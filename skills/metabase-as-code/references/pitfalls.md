@@ -20,6 +20,13 @@ Metabase 0.61–0.63 (open source) and 1.63 (Enterprise).
   unquoted aliases, so `columns` keys must be `ORDER_MONTH`, not `order_month`. `mbac` warns
   about keys the query does not return.
 - **Words such as `month` are reserved in H2**; alias them (`order_month`).
+- **On H2, a `{{variable}}` inside a CTE that a second CTE reads returns 0 rows**, with no error, although
+  `mb query --compile` shows correct SQL. One CTE is fine. Write the later steps as subqueries, and run every native
+  card once after pushing it.
+- **On H2, an expression holding a `{{variable}}` cannot appear in both SELECT and GROUP BY**: each `{{variable}}`
+  becomes its own `?`, so H2 sees two different expressions ("must be in the GROUP BY list"). Compute the expression in
+  a subquery and group by its alias. Optional `[[...]]` clauses hide this until the variable has a value, so run native
+  cards with every optional variable filled in, not only with the defaults.
 - **A model's SQL runs as a subquery when a question builds on it.** `GROUP BY 1` worked in the
   model and failed in the question on H2 ("must be in the GROUP BY list"). Group by the expression,
   and run one question on top of a new model before calling it done.

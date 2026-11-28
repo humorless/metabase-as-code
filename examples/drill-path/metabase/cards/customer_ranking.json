@@ -1,0 +1,91 @@
+{
+  "name": "Customer ranking",
+  "collection": "drill-path",
+  "display": "table",
+  "description": "Every customer of one industry by units shipped. ★ marks the selected customer. NEXT_DASHBOARD is the dashboard a click on the customer name opens: Customers again for an unselected customer (select), Product mix for the selected one (drill).",
+  "template-tags": {
+    "industry": {
+      "type": "text",
+      "name": "industry",
+      "display-name": "Industry",
+      "id": "5d0f1a4e-1c1b-4d3e-9a51-0b6f6e2a1001",
+      "required": true,
+      "default": "Widget"
+    },
+    "customer": {
+      "type": "text",
+      "name": "customer",
+      "display-name": "Customer",
+      "id": "5d0f1a4e-1c1b-4d3e-9a51-0b6f6e2a1002"
+    }
+  },
+  "visualization_settings": {
+    "table.columns": [
+      {
+        "name": "CUSTOMER_RANK",
+        "enabled": true
+      },
+      {
+        "name": "SELECTED",
+        "enabled": true
+      },
+      {
+        "name": "CUSTOMER",
+        "enabled": true
+      },
+      {
+        "name": "UNITS",
+        "enabled": true
+      },
+      {
+        "name": "UNIT_SHARE",
+        "enabled": true
+      },
+      {
+        "name": "ORDERS",
+        "enabled": true
+      },
+      {
+        "name": "PRODUCT_MIX",
+        "enabled": true
+      },
+      {
+        "name": "INDUSTRY",
+        "enabled": false
+      },
+      {
+        "name": "NEXT_DASHBOARD",
+        "enabled": false
+      }
+    ],
+    "table.column_formatting": [
+      {
+        "id": 0,
+        "columns": [
+          "SELECTED"
+        ],
+        "type": "single",
+        "operator": "=",
+        "value": "★",
+        "color": "#509EE3",
+        "highlight_row": true
+      }
+    ],
+    "column_settings": {
+      "[\"name\",\"CUSTOMER_RANK\"]": {
+        "column_title": "#"
+      },
+      "[\"name\",\"SELECTED\"]": {
+        "column_title": "★"
+      },
+      "[\"name\",\"UNIT_SHARE\"]": {
+        "column_title": "Share",
+        "number_style": "percent",
+        "decimals": 2
+      },
+      "[\"name\",\"PRODUCT_MIX\"]": {
+        "column_title": "Mix"
+      }
+    }
+  }
+}

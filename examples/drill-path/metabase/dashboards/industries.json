@@ -1,0 +1,142 @@
+{
+  "name": "Shipments 2 · Industries",
+  "collection": "drill-path",
+  "description": "Layer 2: one small line chart per industry, all on the same Y axis (0–1,200 units). Click an industry to see its customers.",
+  "parameters": [],
+  "dashcards": [
+    {
+      "card_id": null,
+      "row": 0,
+      "col": 0,
+      "size_x": 24,
+      "size_y": 2,
+      "parameter_mappings": [],
+      "visualization_settings": {
+        "virtual_card": {
+          "name": null,
+          "display": "text",
+          "visualization_settings": {},
+          "dataset_query": {},
+          "archived": false
+        },
+        "text": "## Industries\n[Company](/dashboard/@@dashboard:dashboards/company.json@@) › **Industries** › Customer › Product mix. All four charts share one Y axis (0–1,200 units). Click a chart to open that industry's customers."
+      }
+    },
+    {
+      "card_id": "@card:cards/industry_doohickey.json",
+      "row": 2,
+      "col": 0,
+      "size_x": 12,
+      "size_y": 6,
+      "parameter_mappings": [],
+      "visualization_settings": {
+        "click_behavior": {
+          "type": "link",
+          "linkType": "dashboard",
+          "targetId": "@dashboard:dashboards/customers.json",
+          "parameterMapping": {
+            "industry": {
+              "id": "industry",
+              "source": {
+                "type": "column",
+                "id": "INDUSTRY",
+                "name": "Industry"
+              },
+              "target": {
+                "type": "parameter",
+                "id": "industry"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "card_id": "@card:cards/industry_gadget.json",
+      "row": 2,
+      "col": 12,
+      "size_x": 12,
+      "size_y": 6,
+      "parameter_mappings": [],
+      "visualization_settings": {
+        "click_behavior": {
+          "type": "link",
+          "linkType": "dashboard",
+          "targetId": "@dashboard:dashboards/customers.json",
+          "parameterMapping": {
+            "industry": {
+              "id": "industry",
+              "source": {
+                "type": "column",
+                "id": "INDUSTRY",
+                "name": "Industry"
+              },
+              "target": {
+                "type": "parameter",
+                "id": "industry"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "card_id": "@card:cards/industry_gizmo.json",
+      "row": 8,
+      "col": 0,
+      "size_x": 12,
+      "size_y": 6,
+      "parameter_mappings": [],
+      "visualization_settings": {
+        "click_behavior": {
+          "type": "link",
+          "linkType": "dashboard",
+          "targetId": "@dashboard:dashboards/customers.json",
+          "parameterMapping": {
+            "industry": {
+              "id": "industry",
+              "source": {
+                "type": "column",
+                "id": "INDUSTRY",
+                "name": "Industry"
+              },
+              "target": {
+                "type": "parameter",
+                "id": "industry"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "card_id": "@card:cards/industry_widget.json",
+      "row": 8,
+      "col": 12,
+      "size_x": 12,
+      "size_y": 6,
+      "parameter_mappings": [],
+      "visualization_settings": {
+        "click_behavior": {
+          "type": "link",
+          "linkType": "dashboard",
+          "targetId": "@dashboard:dashboards/customers.json",
+          "parameterMapping": {
+            "industry": {
+              "id": "industry",
+              "source": {
+                "type": "column",
+                "id": "INDUSTRY",
+                "name": "Industry"
+              },
+              "target": {
+                "type": "parameter",
+                "id": "industry"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

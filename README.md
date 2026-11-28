@@ -4,7 +4,8 @@ A Claude Code skill that makes AI agents keep Metabase cards, models and dashboa
 with the official [`mb` CLI](https://github.com/metabase/metabase-cli), instead of clicking or calling the API until
 the content exists only inside Metabase.
 
-> **Version 0.1.0**: first release. One skill, `metabase-as-code`, with its push tool `mbac`. See [CHANGELOG](#changelog).
+> **Version 0.2.0**: adds the [drill-path example](examples/drill-path) and two `mbac` fixes found while building it.
+> One skill, `metabase-as-code`, with its push tool `mbac`. See [CHANGELOG](#changelog).
 
 ## Why This Skill?
 
@@ -100,6 +101,18 @@ $MBAC push --all
 $MBAC diff metabase/dashboards/overview.json           # repo vs Metabase
 ```
 
+## Example: a Guided Drill Path
+
+[`examples/drill-path`](examples/drill-path) is a good way to see what the skill does with a real request. Its
+[prompt](examples/drill-path/PROMPT.md) asks for four linked dashboards on the Sample Database: company → industry →
+customer → product mix, with a shared Y axis, top 10 + Other, "click once to select, again to drill", and switching
+industry for the same customer. The folder holds the definitions the skill produced, a table of which Metabase feature
+covers each requirement (and where a workaround was needed), and what was verified.
+
+- **Try the skill**: paste `PROMPT.md` into Claude Code in an empty folder, with a `local` profile on a Metabase that has
+  the Sample Database.
+- **Try `mbac` alone**: `cd examples/drill-path/metabase` and run `mbac push --all`.
+
 ## How It Works
 
 ```mermaid
@@ -140,10 +153,13 @@ flowchart TD
 
 ## Validation
 
-- **`mbac`**: 9 tests against a fake `mb` (`npm test`) cover placeholder resolution, dependency order, the
+- **`mbac`**: 11 tests against a fake `mb` (`npm test`) cover placeholder resolution, dependency order, the
   protected-profile and UI-edit guards, `MB_URL` removal, column metadata and cycle detection.
 - **Live run**: pushed models, MBQL questions on a model, and two dashboards linked by click behavior to Metabase
   0.61.3 (open source, Sample Database). The UI-edit guard and `diff` were checked the same way.
+- **Drill-path example**: 1 model, 12 questions and 4 linked dashboards pushed in one `push --all` to 0.61.3, every
+  card run, and `mbac diff` clean afterwards ([examples/drill-path](examples/drill-path)). Clicking through all four
+  layers in a browser found one SQL bug (fixed, now a pitfall).
 - **Behavior evals**: three with/without-skill scenarios, one isolated `claude -p` run each: **14/14 with the skill vs
   10/14 without**. The gap is in building from scratch: without the skill the agent created content with
   `mb card create`, hard-coded field ids and kept no ids file (2/5 vs 5/5). The skill triggered on its own in every run.
@@ -159,6 +175,13 @@ flowchart TD
 - **One tool, no dependencies**: `mbac` is a single Node script that only calls `mb`.
 
 ## Changelog
+
+### 0.2.0 Release (2026-11-28)
+
+- **metabase-as-code**: [v0.2.0](./skills/metabase-as-code/CHANGELOG.md)
+  - `mbac push` creates empty dashboards before cards, so cards can name a dashboard id
+  - `mbac diff` ignores the `lib/uuid` keys Metabase adds to MBQL clauses
+  - Two new H2 pitfalls; `examples/drill-path`, a four-dashboard guided drill path with its prompt
 
 ### 0.1.0 Release (2026-11-25)
 

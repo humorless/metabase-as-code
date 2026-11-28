@@ -197,3 +197,25 @@ test("card reference cycles are reported", () => {
   assert.equal(r.status, 2);
   assert.match(r.stderr, /cycle/);
 });
+
+test("a card's SQL can name a dashboard pushed in the same run", () => {
+  const t = setup();
+  t.w("cards/links.sql", "SELECT '/dashboard/@@dashboard:dashboards/more.json@@' AS TARGET");
+  t.w("cards/links.json", { name: "Links", collection: "main" });
+  const r = t.run(["push", "--all"]);
+  assert.equal(r.status, 0, r.stderr);
+  const ids = t.ids();
+  const card = t.state().cards[ids.items["cards/links.json"].id];
+  assert.equal(card.dataset_query.stages[0].native, `SELECT '/dashboard/${ids.items["dashboards/more.json"].id}' AS TARGET`);
+});
+
+test("diff ignores the lib/uuid keys Metabase adds to MBQL clauses", () => {
+  const t = setup();
+  assert.equal(t.run(["push", "--all"]).status, 0);
+  const id = t.ids().items["cards/by_day.json"].id;
+  t.mutate((s) => {
+    s.cards[id].dataset_query.stages[0]["lib/uuid"] = "3ba08134-2bba-496b-87b5-b3142bd154ee";
+  });
+  const r = t.run(["diff", "metabase/cards/by_day.json"]);
+  assert.equal(r.status, 0, r.stdout + r.stderr);
+});

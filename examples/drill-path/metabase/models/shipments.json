@@ -1,0 +1,37 @@
+{
+  "name": "Shipments",
+  "type": "model",
+  "collection": "drill-path",
+  "description": "One row per order line of the Sample Database, read as a shipment. Industry is the product category, customer is the person who ordered, units are the order quantity.",
+  "display": "table",
+  "columns": {
+    "ORDER_ID": {
+      "display_name": "Order ID",
+      "description": "ORDERS.ID"
+    },
+    "SHIPPED_AT": {
+      "display_name": "Shipped at",
+      "description": "Order creation time, used as the shipment date"
+    },
+    "INDUSTRY": {
+      "display_name": "Industry",
+      "description": "Product category (Doohickey, Gadget, Gizmo, Widget), standing in for the customer's industry"
+    },
+    "CUSTOMER_ID": {
+      "display_name": "Customer ID",
+      "description": "PEOPLE.ID"
+    },
+    "CUSTOMER": {
+      "display_name": "Customer",
+      "description": "PEOPLE.NAME. Two people share a name in the Sample Database; the dashboards group by name."
+    },
+    "PRODUCT": {
+      "display_name": "Product",
+      "description": "PRODUCTS.TITLE"
+    },
+    "UNITS": {
+      "display_name": "Units shipped",
+      "description": "ORDERS.QUANTITY"
+    }
+  }
+}

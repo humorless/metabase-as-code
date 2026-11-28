@@ -1,0 +1,40 @@
+{
+  "name": "Top 10 customers per quarter",
+  "collection": "drill-path",
+  "display": "line",
+  "description": "Units per quarter for the 10 largest customers of one industry; all other customers are summed as Other, drawn on the right axis because it is about 100 times larger. A selected customer outside the top 10 is added as its own line. Needs the industry variable; on its own it uses Widget.",
+  "template-tags": {
+    "industry": {
+      "type": "text",
+      "name": "industry",
+      "display-name": "Industry",
+      "id": "5d0f1a4e-1c1b-4d3e-9a51-0b6f6e2a1001",
+      "required": true,
+      "default": "Widget"
+    },
+    "customer": {
+      "type": "text",
+      "name": "customer",
+      "display-name": "Customer",
+      "id": "5d0f1a4e-1c1b-4d3e-9a51-0b6f6e2a1002"
+    }
+  },
+  "visualization_settings": {
+    "graph.dimensions": [
+      "SHIP_QUARTER",
+      "CUSTOMER"
+    ],
+    "graph.metrics": [
+      "UNITS"
+    ],
+    "graph.x_axis.title_text": "Quarter",
+    "graph.y_axis.title_text": "Units shipped",
+    "series_settings": {
+      "Other": {
+        "axis": "right",
+        "line.style": "dashed",
+        "color": "#949AAB"
+      }
+    }
+  }
+}

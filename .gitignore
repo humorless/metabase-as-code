@@ -1,4 +1,5 @@
 .scratch/
+examples/*/metabase/ids/
 node_modules/
 *-workspace/
 .DS_Store

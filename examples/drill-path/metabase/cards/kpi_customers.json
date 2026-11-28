@@ -1,0 +1,30 @@
+{
+  "name": "Customers",
+  "collection": "drill-path",
+  "display": "scalar",
+  "description": "Distinct customers (people) who received at least one shipment.",
+  "visualization_settings": {},
+  "dataset_query": {
+    "lib/type": "mbql/query",
+    "database": "@database",
+    "stages": [
+      {
+        "lib/type": "mbql.stage/mbql",
+        "source-card": "@card:models/shipments.json",
+        "aggregation": [
+          [
+            "distinct",
+            {},
+            [
+              "field",
+              {
+                "base-type": "type/Integer"
+              },
+              "CUSTOMER_ID"
+            ]
+          ]
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "name": "This customer also ships to",
+  "collection": "drill-path",
+  "display": "table",
+  "description": "Every industry the customer received shipments in. ★ marks the industry shown in the product mix.",
+  "template-tags": {
+    "industry": {
+      "type": "text",
+      "name": "industry",
+      "display-name": "Industry",
+      "id": "5d0f1a4e-1c1b-4d3e-9a51-0b6f6e2a1001",
+      "required": true,
+      "default": "Widget"
+    },
+    "customer": {
+      "type": "text",
+      "name": "customer",
+      "display-name": "Customer",
+      "id": "5d0f1a4e-1c1b-4d3e-9a51-0b6f6e2a1002",
+      "required": true,
+      "default": "Ted Weber"
+    }
+  },
+  "visualization_settings": {
+    "table.columns": [
+      {
+        "name": "SELECTED",
+        "enabled": true
+      },
+      {
+        "name": "INDUSTRY",
+        "enabled": true
+      },
+      {
+        "name": "UNITS",
+        "enabled": true
+      },
+      {
+        "name": "PRODUCTS",
+        "enabled": true
+      },
+      {
+        "name": "CUSTOMER",
+        "enabled": false
+      }
+    ],
+    "table.column_formatting": [
+      {
+        "id": 0,
+        "columns": [
+          "SELECTED"
+        ],
+        "type": "single",
+        "operator": "=",
+        "value": "★",
+        "color": "#509EE3",
+        "highlight_row": true
+      }
+    ],
+    "column_settings": {
+      "[\"name\",\"SELECTED\"]": {
+        "column_title": "★"
+      }
+    }
+  }
+}

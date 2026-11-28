@@ -1,0 +1,6 @@
+{
+  "drill-path": {
+    "name": "Shipments drill path (example)",
+    "description": "Guided drill-down: company → industry → customer → product mix. Built from examples/drill-path in the metabase-as-code repo."
+  }
+}

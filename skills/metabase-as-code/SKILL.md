@@ -71,7 +71,7 @@ they are what people and Metabot read to understand the data.
    Try the query before pushing: native SQL with `mb query --profile P`, MBQL by saving the
    rendered `dataset_query` to a file and running `mb query --file`.
 2. `mbac push <file>...` pushes what you changed. `mbac push --all` pushes everything in
-   dependency order (collections, then cards that others reference, then dashboards).
+   dependency order (collections, empty dashboards, cards that others reference, then the dashboards' contents).
 3. Verify in Metabase rather than assuming: run the card (`mb card query <id> --profile P`),
    check that the numbers match an independent source when one exists, and give the user the
    URLs `mbac` printed so they can look at the result.

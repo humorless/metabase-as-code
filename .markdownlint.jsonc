@@ -1,4 +1,6 @@
 {
   // Tables and code blocks cannot wrap; prose wraps at 120.
-  "MD013": { "line_length": 120, "tables": false, "code_blocks": false }
+  "MD013": { "line_length": 120, "tables": false, "code_blocks": false },
+  // Changelog sections repeat "Added" / "Changed" under each version.
+  "MD024": { "siblings_only": true }
 }

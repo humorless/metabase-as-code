@@ -1,0 +1,30 @@
+{
+  "name": "Units shipped",
+  "collection": "drill-path",
+  "display": "scalar",
+  "description": "Sum of units over all shipments.",
+  "visualization_settings": {},
+  "dataset_query": {
+    "lib/type": "mbql/query",
+    "database": "@database",
+    "stages": [
+      {
+        "lib/type": "mbql.stage/mbql",
+        "source-card": "@card:models/shipments.json",
+        "aggregation": [
+          [
+            "sum",
+            {},
+            [
+              "field",
+              {
+                "base-type": "type/Integer"
+              },
+              "UNITS"
+            ]
+          ]
+        ]
+      }
+    ]
+  }
+}

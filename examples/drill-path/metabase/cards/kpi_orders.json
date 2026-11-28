@@ -1,0 +1,23 @@
+{
+  "name": "Shipments",
+  "collection": "drill-path",
+  "display": "scalar",
+  "description": "Number of order lines.",
+  "visualization_settings": {},
+  "dataset_query": {
+    "lib/type": "mbql/query",
+    "database": "@database",
+    "stages": [
+      {
+        "lib/type": "mbql.stage/mbql",
+        "source-card": "@card:models/shipments.json",
+        "aggregation": [
+          [
+            "count",
+            {}
+          ]
+        ]
+      }
+    ]
+  }
+}

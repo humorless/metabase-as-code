@@ -137,7 +137,9 @@ MBQL question (no .sql file; required for pivot tables, and for drill-through me
 - Each push replaces the whole dashcard list. Dashcards without an `id` get negative ids
   (new dashcards) automatically.
 - `tabs` is passed through when present (`mb dashboard update --help` explains the rules).
-- Dashboards that link to each other work: `push` creates empty dashboards first, then fills them.
+- Dashboards that link to each other work: `push` creates empty dashboards first, then pushes cards, then fills the
+  dashboards. A card can therefore name a dashboard too, for example a native SQL column
+  `@@dashboard:dashboards/detail.json@@` that a URL click behavior reads.
 
 ## ids/\<profile\>.json
 

@@ -1,0 +1,30 @@
+{
+  "name": "Product mix",
+  "collection": "drill-path",
+  "display": "pie",
+  "description": "Share of units by product for one customer in one industry.",
+  "template-tags": {
+    "industry": {
+      "type": "text",
+      "name": "industry",
+      "display-name": "Industry",
+      "id": "5d0f1a4e-1c1b-4d3e-9a51-0b6f6e2a1001",
+      "required": true,
+      "default": "Widget"
+    },
+    "customer": {
+      "type": "text",
+      "name": "customer",
+      "display-name": "Customer",
+      "id": "5d0f1a4e-1c1b-4d3e-9a51-0b6f6e2a1002",
+      "required": true,
+      "default": "Ted Weber"
+    }
+  },
+  "visualization_settings": {
+    "pie.dimension": "PRODUCT",
+    "pie.metric": "UNITS",
+    "pie.show_legend": true,
+    "pie.percent_visibility": "inside"
+  }
+}

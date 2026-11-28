@@ -1,0 +1,49 @@
+{
+  "name": "Units shipped per month",
+  "collection": "drill-path",
+  "display": "line",
+  "description": "All industries, all customers. On the Company dashboard, clicking anywhere on the line opens the Industries dashboard.",
+  "visualization_settings": {
+    "graph.dimensions": [
+      "SHIPPED_AT"
+    ],
+    "graph.metrics": [
+      "sum"
+    ],
+    "graph.x_axis.title_text": "Month",
+    "graph.y_axis.title_text": "Units shipped"
+  },
+  "dataset_query": {
+    "lib/type": "mbql/query",
+    "database": "@database",
+    "stages": [
+      {
+        "lib/type": "mbql.stage/mbql",
+        "source-card": "@card:models/shipments.json",
+        "aggregation": [
+          [
+            "sum",
+            {},
+            [
+              "field",
+              {
+                "base-type": "type/Integer"
+              },
+              "UNITS"
+            ]
+          ]
+        ],
+        "breakout": [
+          [
+            "field",
+            {
+              "base-type": "type/DateTime",
+              "temporal-unit": "month"
+            },
+            "SHIPPED_AT"
+          ]
+        ]
+      }
+    ]
+  }
+}

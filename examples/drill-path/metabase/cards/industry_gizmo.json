@@ -1,0 +1,80 @@
+{
+  "name": "Gizmo: units per month",
+  "collection": "drill-path",
+  "display": "line",
+  "description": "Units shipped per month in the Gizmo industry. The Y axis is fixed at 0–1200 on all four industry cards so they compare at a glance; raise Y_MAX in every industry card together if a month ever exceeds it.",
+  "visualization_settings": {
+    "graph.dimensions": [
+      "SHIPPED_AT",
+      "INDUSTRY"
+    ],
+    "graph.metrics": [
+      "sum"
+    ],
+    "graph.y_axis.auto_range": false,
+    "graph.y_axis.min": 0,
+    "graph.y_axis.max": 1200,
+    "graph.x_axis.title_text": "Month",
+    "graph.y_axis.title_text": "Units shipped",
+    "graph.show_values": false,
+    "series_settings": {
+      "Gizmo": {
+        "color": "#A989C5"
+      }
+    }
+  },
+  "dataset_query": {
+    "lib/type": "mbql/query",
+    "database": "@database",
+    "stages": [
+      {
+        "lib/type": "mbql.stage/mbql",
+        "source-card": "@card:models/shipments.json",
+        "filters": [
+          [
+            "=",
+            {},
+            [
+              "field",
+              {
+                "base-type": "type/Text"
+              },
+              "INDUSTRY"
+            ],
+            "Gizmo"
+          ]
+        ],
+        "aggregation": [
+          [
+            "sum",
+            {},
+            [
+              "field",
+              {
+                "base-type": "type/Integer"
+              },
+              "UNITS"
+            ]
+          ]
+        ],
+        "breakout": [
+          [
+            "field",
+            {
+              "base-type": "type/DateTime",
+              "temporal-unit": "month"
+            },
+            "SHIPPED_AT"
+          ],
+          [
+            "field",
+            {
+              "base-type": "type/Text"
+            },
+            "INDUSTRY"
+          ]
+        ]
+      }
+    ]
+  }
+}

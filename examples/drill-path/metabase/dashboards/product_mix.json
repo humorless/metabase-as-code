@@ -1,0 +1,164 @@
+{
+  "name": "Shipments 4 · Product mix",
+  "collection": "drill-path",
+  "description": "Layer 4: one customer's product mix within one industry. Click another industry under 'This customer also ships to' to switch industry for the same customer.",
+  "parameters": [
+    {
+      "id": "industry",
+      "name": "Industry",
+      "slug": "industry",
+      "type": "string/=",
+      "sectionId": "string",
+      "default": [
+        "Widget"
+      ],
+      "required": true
+    },
+    {
+      "id": "customer",
+      "name": "Customer",
+      "slug": "customer",
+      "type": "string/=",
+      "sectionId": "string",
+      "default": [
+        "Ted Weber"
+      ],
+      "required": true
+    }
+  ],
+  "dashcards": [
+    {
+      "card_id": null,
+      "row": 0,
+      "col": 0,
+      "size_x": 24,
+      "size_y": 2,
+      "parameter_mappings": [
+        {
+          "parameter_id": "industry",
+          "target": [
+            "text-tag",
+            "industry"
+          ]
+        },
+        {
+          "parameter_id": "customer",
+          "target": [
+            "text-tag",
+            "customer"
+          ]
+        }
+      ],
+      "visualization_settings": {
+        "virtual_card": {
+          "name": null,
+          "display": "text",
+          "visualization_settings": {},
+          "dataset_query": {},
+          "archived": false
+        },
+        "text": "## {{customer}} in {{industry}}\n[Company](/dashboard/@@dashboard:dashboards/company.json@@) › [Industries](/dashboard/@@dashboard:dashboards/industries.json@@) › [{{industry}}](/dashboard/@@dashboard:dashboards/customers.json@@?industry={{industry}}) › **{{customer}}**. Click another industry on the right to see this customer's mix there."
+      }
+    },
+    {
+      "card_id": "@card:cards/product_mix.json",
+      "row": 2,
+      "col": 0,
+      "size_x": 14,
+      "size_y": 9,
+      "parameter_mappings": [
+        {
+          "parameter_id": "industry",
+          "card_id": "@card:cards/product_mix.json",
+          "target": [
+            "variable",
+            [
+              "template-tag",
+              "industry"
+            ]
+          ]
+        },
+        {
+          "parameter_id": "customer",
+          "card_id": "@card:cards/product_mix.json",
+          "target": [
+            "variable",
+            [
+              "template-tag",
+              "customer"
+            ]
+          ]
+        }
+      ],
+      "visualization_settings": {}
+    },
+    {
+      "card_id": "@card:cards/customer_industries.json",
+      "row": 2,
+      "col": 14,
+      "size_x": 10,
+      "size_y": 9,
+      "parameter_mappings": [
+        {
+          "parameter_id": "industry",
+          "card_id": "@card:cards/customer_industries.json",
+          "target": [
+            "variable",
+            [
+              "template-tag",
+              "industry"
+            ]
+          ]
+        },
+        {
+          "parameter_id": "customer",
+          "card_id": "@card:cards/customer_industries.json",
+          "target": [
+            "variable",
+            [
+              "template-tag",
+              "customer"
+            ]
+          ]
+        }
+      ],
+      "visualization_settings": {
+        "column_settings": {
+          "[\"name\",\"INDUSTRY\"]": {
+            "click_behavior": {
+              "type": "link",
+              "linkType": "dashboard",
+              "targetId": "@dashboard:dashboards/product_mix.json",
+              "parameterMapping": {
+                "industry": {
+                  "id": "industry",
+                  "source": {
+                    "type": "column",
+                    "id": "INDUSTRY",
+                    "name": "INDUSTRY"
+                  },
+                  "target": {
+                    "type": "parameter",
+                    "id": "industry"
+                  }
+                },
+                "customer": {
+                  "id": "customer",
+                  "source": {
+                    "type": "parameter",
+                    "id": "customer",
+                    "name": "Customer"
+                  },
+                  "target": {
+                    "type": "parameter",
+                    "id": "customer"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

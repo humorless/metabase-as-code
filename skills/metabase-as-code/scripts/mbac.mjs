@@ -559,6 +559,15 @@ function sortKeys(v) {
   return v;
 }
 
+// Metabase adds a "lib/uuid" to every MBQL clause it stores; they are not part of the definition.
+function withoutUuids(v) {
+  if (Array.isArray(v)) return v.map(withoutUuids);
+  if (v && typeof v === "object") {
+    return Object.fromEntries(Object.entries(v).filter(([k]) => k !== "lib/uuid").map(([k, x]) => [k, withoutUuids(x)]));
+  }
+  return v;
+}
+
 function nativeSql(q) {
   if (q?.stages?.[0]?.native !== undefined) return q.stages[0].native;
   if (q?.native?.query !== undefined) return q.native.query;
@@ -580,8 +589,8 @@ function diffView(kind, local, remote, def) {
       l.sql = sql;
       r.sql = nativeSql(remote.dataset_query);
     } else {
-      l.dataset_query = local.dataset_query;
-      r.dataset_query = remote.dataset_query;
+      l.dataset_query = withoutUuids(local.dataset_query);
+      r.dataset_query = withoutUuids(remote.dataset_query);
     }
     if (def.columns) {
       const meta = Object.fromEntries((remote.result_metadata || []).map((c) => [c.name, c]));
@@ -699,9 +708,10 @@ function cmdPush(project, opts) {
   const dashboards = files.filter((r) => project.kind(r) === "dashboard");
   const base = project.baseUrl();
   const urls = [];
-  for (const rel of cards) urls.push(`${base}/question/${project.pushCard(rel, opts)}  ${rel}`);
-  // Shells first, so dashboards that link to each other can resolve @dashboard: placeholders.
+  // Dashboard shells before cards: dashboards that link to each other, and cards whose SQL or
+  // settings name a dashboard (@@dashboard:...@@ in a link column), can then resolve its id.
   const fresh = new Set(dashboards.filter((rel) => project.ensureDashboardShell(rel, opts)));
+  for (const rel of cards) urls.push(`${base}/question/${project.pushCard(rel, opts)}  ${rel}`);
   for (const rel of dashboards) {
     urls.push(`${base}/dashboard/${project.pushDashboard(rel, opts, fresh.has(rel))}  ${rel}`);
   }
